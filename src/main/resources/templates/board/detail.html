@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Board View</title>
+</head>
+<body>
+<h1>Board View</h1>
+<div>
+  <p><strong>ID:</strong> <span th:text="${board.id}"></span></p>
+  <p><strong>Title:</strong> <span th:text="${board.title}"></span></p>
+  <p><strong>Writer:</strong> <span th:text="${board.member_id}"></span></p>
+</div>
+<div>
+  <p><span th:text="${board.content}"></span></p>
+</div>
+<a th:href="@{/board/{id}/edit(id=${board.id})}">Modify</a>
+<a th:href="@{/board/{id}/delete(id=${board.id})}">Delete</a>
+<a href="/board">Back to List</a>
+</body>
+</html>

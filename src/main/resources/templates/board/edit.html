@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Modify Board</title>
+</head>
+<body>
+<h1>Modify Board</h1>
+<form th:action="@{/board/{id}/edit(id=${board.id})}" method="post">
+  <label for="title">Title:</label>
+  <input type="text" name="title" id="title" th:value="${board.title}">
+  <br>
+  <label for="member_id">Writer:</label>
+  <input type="text" name="member_id" id="member_id" th:value="${board.member_id}">
+  <br>
+  <label for="content">Content:</label>
+  <textarea name="content" id="content" th:text="${board.content}"></textarea>
+  <br>
+  <input type="submit" value="Modify">
+</form>
+<a href="/board">Back to Board List</a>
+</body>
+</html>
