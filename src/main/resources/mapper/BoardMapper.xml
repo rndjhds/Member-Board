@@ -18,7 +18,7 @@
     <insert id="create" parameterType="com.example.memberboard.model.Board">
         INSERT INTO boards (id, title, content, member_id) VALUES (boards_seq.nextval, #{title}, #{content}, #{member_id})
     </insert>
-    
+
     <select id="findById" parameterType="com.example.memberboard.model.Board" resultType="com.example.memberboard.model.Board">
         SELECT * FROM boards WHERE id = #{id}
     </select>
