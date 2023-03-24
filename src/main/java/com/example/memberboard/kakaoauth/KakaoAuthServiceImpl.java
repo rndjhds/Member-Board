@@ -1,13 +1,13 @@
 package com.example.memberboard.kakaoauth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,30 +44,40 @@ public class KakaoAuthServiceImpl implements KakaoAuthService {
 
     @Override
     public String getAccessToken(String code, String redirectUri) {
-        Map<String, String> params = new HashMap<>();
-        params.put("grant_type", "authorization_code");
-        params.put("client_id", clientId);
-        params.put("client_secret", clientSecret);
-        params.put("redirect_uri", redirectUri);
-        params.put("code", code);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        Map<String, String> response = restTemplate.postForObject(TOKEN_SERVER_URL, buildQueryString(params), Map.class);
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", clientId);
+        params.add("client_secret", clientSecret);
+        params.add("redirect_uri", redirectUri);
+        params.add("code", code);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+
+        Map<String, String> response = restTemplate.postForObject(TOKEN_SERVER_URL, request, Map.class);
 
         return response.get("access_token");
     }
 
+
     @Override
     public KakaoUserInfo getUserInfo(String accessToken) {
-        String response = restTemplate.getForObject(USERINFO_SERVER_URL, String.class,
-                "Bearer " + accessToken);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
 
-        try {
-            return objectMapper.readValue(response,
-                    KakaoUserInfo.class);
-        } catch (IOException e) {
-            throw new RuntimeException("Error parsing Kakao user info", e);
-        }
+        HttpEntity<?> request = new HttpEntity<>(headers);
+
+        ResponseEntity<KakaoUserInfo> response = restTemplate.exchange(
+                USERINFO_SERVER_URL,
+                HttpMethod.GET,
+                request,
+                KakaoUserInfo.class);
+
+        return response.getBody();
     }
+
 
     private String buildQueryString(Map<String, String> params) {
         StringBuilder sb = new StringBuilder();

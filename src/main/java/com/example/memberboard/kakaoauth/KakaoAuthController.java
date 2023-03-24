@@ -32,6 +32,6 @@ public class KakaoAuthController {
 
         model.addAttribute("userInfo", userInfo);
 
-        return "/board/list";
+        return "/register";
     }
 }
