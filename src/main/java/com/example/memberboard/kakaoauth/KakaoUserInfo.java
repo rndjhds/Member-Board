@@ -10,6 +10,16 @@ public class KakaoUserInfo {
     private Properties properties;
     private KakaoAccount kakao_account;
 
+    @Override
+    public String toString() {
+        return "KakaoUserInfo{" +
+                "id=" + id +
+                ", connected_at='" + connected_at + '\'' +
+                ", properties=" + properties.toString() +
+                ", kakao_account=" + kakao_account.toString() +
+                '}';
+    }
+
     public long getId() {
         return id;
     }
@@ -47,6 +57,15 @@ public class KakaoUserInfo {
         private String profile_image;
         private String thumbnail_image;
 
+        @Override
+        public String toString() {
+            return "Properties{" +
+                    "nickname='" + nickname + '\'' +
+                    ", profile_image='" + profile_image + '\'' +
+                    ", thumbnail_image='" + thumbnail_image + '\'' +
+                    '}';
+        }
+
         public String getNickname() {
             return nickname;
         }
@@ -80,6 +99,19 @@ public class KakaoUserInfo {
         private boolean is_email_valid;
         private boolean is_email_verified;
         private String email;
+
+        @Override
+        public String toString() {
+            return "KakaoAccount{" +
+                    "profile_needs_agreement=" + profile_needs_agreement +
+                    ", profile=" + profile +
+                    ", has_email=" + has_email +
+                    ", email_needs_agreement=" + email_needs_agreement +
+                    ", is_email_valid=" + is_email_valid +
+                    ", is_email_verified=" + is_email_verified +
+                    ", email='" + email + '\'' +
+                    '}';
+        }
 
         public boolean isProfile_needs_agreement() {
             return profile_needs_agreement;
